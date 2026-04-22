@@ -1,30 +1,52 @@
 from __future__ import annotations
 
-import sqlite3
+import json
+import os
 from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+import mysql.connector
 from flask import Flask, jsonify, render_template, request
 
 BASE_DIR = Path(__file__).resolve().parent
-DB_PATH = BASE_DIR / "db" / "wedding_invite.db"
 SCHEMA_PATH = BASE_DIR / "db" / "schema.sql"
 
 app = Flask(__name__)
 
 
-def get_db_connection() -> sqlite3.Connection:
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    return conn
+def get_db_config() -> dict[str, Any]:
+    return {
+        "host": os.getenv("DB_HOST", "127.0.0.1"),
+        "port": int(os.getenv("DB_PORT", "3306")),
+        "user": os.getenv("DB_USER", "root"),
+        "password": os.getenv("DB_PASSWORD", ""),
+        "database": os.getenv("DB_NAME", "wedding_invite"),
+    }
+
+
+def get_db_connection() -> mysql.connector.MySQLConnection:
+    return mysql.connector.connect(**get_db_config())
 
 
 def init_db() -> None:
-    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+    cfg = get_db_config()
+    db_name = cfg.pop("database")
+
+    admin_conn = mysql.connector.connect(**cfg)
+    admin_conn.autocommit = True
+    with admin_conn.cursor() as cursor:
+        cursor.execute(f"CREATE DATABASE IF NOT EXISTS `{db_name}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
+    admin_conn.close()
+
+    conn = get_db_connection()
+    conn.autocommit = True
     schema_sql = SCHEMA_PATH.read_text(encoding="utf-8")
-    with get_db_connection() as conn:
-        conn.executescript(schema_sql)
+    statements = [stmt.strip() for stmt in schema_sql.split(";") if stmt.strip()]
+    with conn.cursor() as cursor:
+        for statement in statements:
+            cursor.execute(statement)
+    conn.close()
 
 
 @app.route("/")
@@ -39,18 +61,21 @@ def search_guest() -> Any:
         return jsonify({"matches": []})
 
     like_query = f"%{q}%"
-    with get_db_connection() as conn:
-        rows = conn.execute(
+    conn = get_db_connection()
+    with conn.cursor(dictionary=True) as cursor:
+        cursor.execute(
             """
             SELECT id, first_name, last_name
             FROM guests
-            WHERE lower(first_name || ' ' || last_name) LIKE lower(?)
-               OR lower(last_name || ' ' || first_name) LIKE lower(?)
+            WHERE LOWER(CONCAT(first_name, ' ', last_name)) LIKE LOWER(%s)
+               OR LOWER(CONCAT(last_name, ' ', first_name)) LIKE LOWER(%s)
             ORDER BY last_name, first_name
             LIMIT 10
             """,
             (like_query, like_query),
-        ).fetchall()
+        )
+        rows = cursor.fetchall()
+    conn.close()
 
     matches = [
         {"id": row["id"], "first_name": row["first_name"], "last_name": row["last_name"]}
@@ -85,66 +110,75 @@ def submit_rsvp() -> Any:
         "arrival_time": data.get("arrival_time", ""),
     }
 
-    with get_db_connection() as conn:
-        guest_row = conn.execute(
-            """
-            SELECT id FROM guests
-            WHERE lower(first_name) = lower(?) AND lower(last_name) = lower(?)
-            LIMIT 1
-            """,
-            (first_name, last_name),
-        ).fetchone()
-
-        if guest_row:
-            guest_id = guest_row["id"]
-        else:
-            cursor = conn.execute(
-                "INSERT INTO guests (first_name, last_name) VALUES (?, ?)",
+    conn = get_db_connection()
+    conn.autocommit = False
+    try:
+        with conn.cursor(dictionary=True) as cursor:
+            cursor.execute(
+                """
+                SELECT id FROM guests
+                WHERE LOWER(first_name) = LOWER(%s) AND LOWER(last_name) = LOWER(%s)
+                LIMIT 1
+                """,
                 (first_name, last_name),
             )
-            guest_id = cursor.lastrowid
+            guest_row = cursor.fetchone()
 
-        cursor = conn.execute(
-            """
-            INSERT INTO rsvp_submissions (
-                guest_id,
-                attendance,
-                transport,
-                accommodation,
-                dietary,
-                comment,
-                survey_json,
-                submitted_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            """,
-            (
-                guest_id,
-                attendance,
-                transport,
-                accommodation,
-                dietary,
-                comment,
-                str(survey_json),
-                datetime.utcnow().isoformat(timespec="seconds"),
-            ),
-        )
-        submission_id = cursor.lastrowid
+            if guest_row:
+                guest_id = guest_row["id"]
+            else:
+                cursor.execute(
+                    "INSERT INTO guests (first_name, last_name) VALUES (%s, %s)",
+                    (first_name, last_name),
+                )
+                guest_id = cursor.lastrowid
 
-        for member in family_members:
-            m_first = str(member.get("first_name", "")).strip()
-            m_last = str(member.get("last_name", "")).strip()
-            if not m_first or not m_last:
-                continue
-
-            conn.execute(
+            cursor.execute(
                 """
-                INSERT INTO family_members (submission_id, first_name, last_name)
-                VALUES (?, ?, ?)
+                INSERT INTO rsvp_submissions (
+                    guest_id,
+                    attendance,
+                    transport,
+                    accommodation,
+                    dietary,
+                    comment,
+                    survey_json,
+                    submitted_at
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                 """,
-                (submission_id, m_first, m_last),
+                (
+                    guest_id,
+                    attendance,
+                    transport,
+                    accommodation,
+                    dietary,
+                    comment,
+                    json.dumps(survey_json, ensure_ascii=False),
+                    datetime.utcnow(),
+                ),
             )
+            submission_id = cursor.lastrowid
+
+            for member in family_members:
+                m_first = str(member.get("first_name", "")).strip()
+                m_last = str(member.get("last_name", "")).strip()
+                if not m_first or not m_last:
+                    continue
+
+                cursor.execute(
+                    """
+                    INSERT INTO family_members (submission_id, first_name, last_name)
+                    VALUES (%s, %s, %s)
+                    """,
+                    (submission_id, m_first, m_last),
+                )
 
         conn.commit()
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        conn.close()
 
     return jsonify({"status": "ok", "submission_id": submission_id})
 

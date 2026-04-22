@@ -1,6 +1,6 @@
 # Wedding Invite Site
 
-Сайт-приглашение на свадьбу с формой RSVP и SQLite-базой гостей.
+Сайт-приглашение на свадьбу с формой RSVP и **MySQL**-базой гостей.
 
 ## Запуск
 
@@ -8,6 +8,13 @@
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+
+export DB_HOST=127.0.0.1
+export DB_PORT=3306
+export DB_USER=root
+export DB_PASSWORD=your_password
+export DB_NAME=wedding_invite
+
 python app.py
 ```
 
@@ -22,4 +29,4 @@ python app.py
   - поиск по гостям,
   - добавление семьи,
   - мини-опрос (дорога, проживание, питание, музыка, время приезда).
-- SQLite база с таблицами: `guests`, `rsvp_submissions`, `family_members`.
+- MySQL база с таблицами: `guests`, `rsvp_submissions`, `family_members`.
