@@ -42,6 +42,7 @@ def init_db() -> None:
     conn = get_db_connection()
     conn.autocommit = True
     schema_sql = SCHEMA_PATH.read_text(encoding="utf-8")
+    schema_sql = schema_sql.replace("__DB_NAME__", db_name)
     statements = [stmt.strip() for stmt in schema_sql.split(";") if stmt.strip()]
     with conn.cursor() as cursor:
         for statement in statements:

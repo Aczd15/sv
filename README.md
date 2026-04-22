@@ -35,7 +35,10 @@ python app.py
 ## Инициализация схемы вручную
 
 ```bash
-mysql -u root -p wedding_invite < db/schema.sql
+mysql -u root -p < db/schema.sql
 ```
 
 Важно: запускайте **весь файл** `db/schema.sql`, а не отдельный фрагмент строки.
+
+
+Если видишь ошибку `#1046 - База данных не выбрана`, запускай полный файл `db/schema.sql` целиком (в нем уже есть `CREATE DATABASE`).
