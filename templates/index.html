@@ -11,9 +11,12 @@
 </head>
 <body>
     <div class="bg-overlay"></div>
+    <div class="petals" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
     <header class="hero reveal reveal-left">
         <p class="date">07.08.27</p>
-        <h1>Атлана &amp; Никита</h1>
+        <h1>Никита &amp; Атлана</h1>
         <p class="subtitle">С любовью приглашаем вас разделить наш особенный день</p>
         <a class="hero-btn" href="#rsvp">Подтвердить участие</a>
     </header>

@@ -132,3 +132,16 @@ const observer = new IntersectionObserver(
 );
 
 revealElements.forEach((el) => observer.observe(el));
+
+
+revealElements.forEach((el, index) => {
+  el.style.transitionDelay = `${index * 120}ms`;
+});
+
+const overlay = document.querySelector(".bg-overlay");
+document.addEventListener("mousemove", (event) => {
+  if (!overlay) return;
+  const x = (event.clientX / window.innerWidth - 0.5) * 10;
+  const y = (event.clientY / window.innerHeight - 0.5) * 10;
+  overlay.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px)`;
+});
