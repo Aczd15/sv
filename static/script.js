@@ -43,7 +43,7 @@ async function searchGuest() {
   }
 
   try {
-    const response = await fetch(`/api/guests/search?q=${encodeURIComponent(q)}`);
+    const response = await fetch(`api/guests_search.php?q=${encodeURIComponent(q)}`);
     const data = await response.json();
 
     if (data.matches?.length) {
@@ -96,7 +96,7 @@ form.addEventListener("submit", async (event) => {
   statusText.style.color = "#7e1f3d";
 
   try {
-    const response = await fetch("/api/rsvp", {
+    const response = await fetch("api/rsvp.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
