@@ -30,3 +30,12 @@ python app.py
   - добавление семьи,
   - мини-опрос (дорога, проживание, питание, музыка, время приезда).
 - MySQL база с таблицами: `guests`, `rsvp_submissions`, `family_members`.
+
+
+## Инициализация схемы вручную
+
+```bash
+mysql -u root -p wedding_invite < db/schema.sql
+```
+
+Важно: запускайте **весь файл** `db/schema.sql`, а не отдельный фрагмент строки.

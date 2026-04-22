@@ -1,38 +1,41 @@
 CREATE TABLE IF NOT EXISTS guests (
-    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    id INT NOT NULL AUTO_INCREMENT,
     first_name VARCHAR(120) NOT NULL,
     last_name VARCHAR(120) NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id),
-    KEY idx_guests_name (last_name, first_name)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE INDEX idx_guests_name ON guests (last_name, first_name);
 
 CREATE TABLE IF NOT EXISTS rsvp_submissions (
-    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    guest_id BIGINT UNSIGNED NOT NULL,
+    id INT NOT NULL AUTO_INCREMENT,
+    guest_id INT NOT NULL,
     attendance VARCHAR(120) NOT NULL,
     transport VARCHAR(120) NULL,
     accommodation VARCHAR(180) NULL,
     dietary VARCHAR(255) NULL,
     comment TEXT NULL,
-    survey_json JSON NULL,
+    survey_json TEXT NULL,
     submitted_at DATETIME NOT NULL,
     PRIMARY KEY (id),
-    KEY idx_rsvp_guest_id (guest_id),
     CONSTRAINT fk_rsvp_guest FOREIGN KEY (guest_id) REFERENCES guests (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE INDEX idx_rsvp_guest_id ON rsvp_submissions (guest_id);
 
 CREATE TABLE IF NOT EXISTS family_members (
-    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    submission_id BIGINT UNSIGNED NOT NULL,
+    id INT NOT NULL AUTO_INCREMENT,
+    submission_id INT NOT NULL,
     first_name VARCHAR(120) NOT NULL,
     last_name VARCHAR(120) NOT NULL,
     PRIMARY KEY (id),
-    KEY idx_family_submission_id (submission_id),
     CONSTRAINT fk_family_submission FOREIGN KEY (submission_id)
         REFERENCES rsvp_submissions (id)
         ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE INDEX idx_family_submission_id ON family_members (submission_id);
 
 INSERT INTO guests (first_name, last_name)
 SELECT 'Анна', 'Иванова'
