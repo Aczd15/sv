@@ -3,77 +3,72 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Никита & Атлана — приглашение</title>
+  <title>Никита и Атлана — Свадебное приглашение</title>
+  <meta name="description" content="Свадебное приглашение и RSVP форма" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Marck+Script&family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="vines vines-left" aria-hidden="true"></div>
-  <div class="vines vines-right" aria-hidden="true"></div>
+  <div class="decor decor--left" aria-hidden="true"></div>
+  <div class="decor decor--right" aria-hidden="true"></div>
 
   <div class="petals" aria-hidden="true">
-    <span>🌸</span><span>🌺</span><span>🌼</span><span>💮</span><span>🌷</span><span>🌸</span><span>🌺</span>
+    <span>🌸</span><span>🌺</span><span>🌼</span><span>🌷</span><span>💮</span><span>🌸</span>
   </div>
 
-  <main class="container">
-    <header class="hero card">
-      <p class="date">07.08.2027</p>
-      <h1>Никита &amp; Атлана</h1>
-      <p class="subtitle">С любовью приглашаем вас разделить наш особенный день.</p>
-      <a class="btn" href="#rsvp">Подтвердить участие</a>
-    </header>
+  <main class="page">
+    <section class="hero card">
+      <p class="hero__date">07 августа 2027</p>
+      <h1 class="hero__title">Никита &amp; Атлана</h1>
+      <p class="hero__lead">С любовью приглашаем вас разделить с нами этот тёплый и важный день.</p>
+      <a href="#rsvp" class="button">Подтвердить участие</a>
+    </section>
 
     <section class="card">
       <h2>Дорогие гости!</h2>
       <p>
-        Мы будем счастливы видеть вас на нашей свадьбе. Пусть этот день станет началом новой красивой истории,
-        наполненной теплом, улыбками и объятиями.
+        Для нас большая радость отпраздновать свадьбу рядом с близкими людьми.
+        Будем счастливы видеть вас и создать вместе красивые воспоминания.
       </p>
     </section>
 
     <section class="card">
       <h2>Программа дня</h2>
-      <ul class="timeline">
-        <li><strong>15:00</strong> Сбор гостей и welcome-зона</li>
-        <li><strong>16:00</strong> Церемония</li>
-        <li><strong>17:00</strong> Банкет и тёплые поздравления</li>
-        <li><strong>20:00</strong> Танцы, торт и вечерняя программа</li>
-      </ul>
+      <ol class="schedule">
+        <li><time>15:00</time> Сбор гостей и welcome-зона</li>
+        <li><time>16:00</time> Церемония</li>
+        <li><time>17:00</time> Банкет и поздравления</li>
+        <li><time>20:00</time> Танцы, торт и вечерняя программа</li>
+      </ol>
     </section>
 
     <section id="rsvp" class="card">
       <h2>RSVP / Анкета гостя</h2>
-      <form class="rsvp-grid">
-        <label>Имя
-          <input type="text" name="firstName" placeholder="Введите имя" required />
-        </label>
-        <label>Фамилия
-          <input type="text" name="lastName" placeholder="Введите фамилию" required />
+      <form id="rsvpForm" class="form-grid">
+        <label>
+          Имя
+          <input type="text" name="first_name" placeholder="Введите имя" required />
         </label>
 
-        <label class="full checkbox-row">
-          <input type="checkbox" id="withFamily" />
-          <span>Я приду с семьёй</span>
+        <label>
+          Фамилия
+          <input type="text" name="last_name" placeholder="Введите фамилию" required />
         </label>
 
-        <div id="familyBlock" class="full family hidden">
-          <p class="family-title">Состав семьи</p>
-          <div id="familyList"></div>
-          <button class="btn btn-soft" type="button" id="addFamilyMember">+ Добавить члена семьи</button>
-        </div>
-
-        <label>Сможете присутствовать?
+        <label>
+          Сможете присутствовать?
           <select name="attendance" required>
             <option value="">Выберите вариант</option>
-            <option>Да, с радостью!</option>
-            <option>К сожалению, не смогу</option>
-            <option>Пока не уверен(а)</option>
+            <option value="yes">Да, с радостью</option>
+            <option value="no">К сожалению, не смогу</option>
+            <option value="maybe">Сообщу позже</option>
           </select>
         </label>
 
-        <label>На чём планируете добираться?
+        <label>
+          На чём планируете добираться?
           <select name="transport">
             <option value="">Выберите вариант</option>
             <option>На машине</option>
@@ -82,39 +77,41 @@
           </select>
         </label>
 
-        <label>Нужна ли помощь с проживанием?
-          <select name="hotel">
+        <label>
+          Нужна помощь с проживанием?
+          <select name="housing">
             <option value="">Выберите вариант</option>
-            <option>Да, нужна</option>
-            <option>Нет, не нужна</option>
+            <option>Да</option>
+            <option>Нет</option>
           </select>
         </label>
 
-        <label>Пожелания по меню / аллергии
-          <input type="text" name="food" placeholder="Например: без глютена" />
+        <label>
+          Пожелания по меню / аллергии
+          <input type="text" name="food_notes" placeholder="Например: без лактозы" />
         </label>
 
-        <label>Любимая песня для танцпола
-          <input type="text" name="song" placeholder="Название трека / исполнитель" />
+        <label class="full checkbox">
+          <input type="checkbox" id="withFamily" />
+          <span>Я приду с семьёй</span>
         </label>
 
-        <label>Во сколько примерно будете на площадке?
-          <select name="arrivalTime">
-            <option value="">Выберите вариант</option>
-            <option>К началу (15:00)</option>
-            <option>К церемонии (16:00)</option>
-            <option>Позже</option>
-          </select>
+        <div id="familySection" class="family full hidden">
+          <p class="family__title">Состав семьи</p>
+          <div id="familyList"></div>
+          <button type="button" id="addRelative" class="button button--light">+ Добавить человека</button>
+        </div>
+
+        <label class="full">
+          Дополнительный комментарий
+          <textarea name="comment" rows="4" placeholder="Ваши вопросы или пожелания"></textarea>
         </label>
 
-        <label class="full">Дополнительный комментарий
-          <textarea name="comment" rows="4" placeholder="Ваши вопросы, пожелания"></textarea>
-        </label>
-
-        <div class="full actions">
-          <button type="submit" class="btn">Отправить анкету</button>
+        <div class="full">
+          <button type="submit" class="button">Отправить анкету</button>
         </div>
       </form>
+      <p id="formMessage" class="message" aria-live="polite"></p>
     </section>
   </main>
 
