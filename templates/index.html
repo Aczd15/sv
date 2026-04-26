@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Свадебное приглашение</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+</head>
+<body>
+    <div class="bg-overlay"></div>
+    <div class="petals" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <header class="hero reveal reveal-left">
+        <p class="date">07.08.27</p>
+        <h1>Никита &amp; Атлана</h1>
+        <p class="subtitle">С любовью приглашаем вас разделить наш особенный день</p>
+        <a class="hero-btn" href="#rsvp">Подтвердить участие</a>
+    </header>
+
+    <main>
+        <section class="card reveal reveal-right">
+            <h2>Дорогие гости!</h2>
+            <p>
+                Мы будем счастливы видеть вас на нашей свадьбе. Пусть этот день станет началом
+                новой красивой истории, наполненной теплом, улыбками и объятиями.
+            </p>
+        </section>
+
+        <section class="card reveal reveal-left">
+            <h2>Программа дня</h2>
+            <ul class="timeline">
+                <li><span>15:00</span> Сбор гостей и welcome-зона</li>
+                <li><span>16:00</span> Церемония</li>
+                <li><span>17:00</span> Банкет и тёплые поздравления</li>
+                <li><span>20:00</span> Танцы, торт и вечерняя программа</li>
+            </ul>
+        </section>
+
+        <section class="card reveal reveal-right" id="rsvp">
+            <h2>RSVP / Анкета гостя</h2>
+            <form id="rsvpForm">
+                <div class="form-grid">
+                    <label>
+                        Имя
+                        <input type="text" id="firstName" required placeholder="Введите имя" />
+                    </label>
+                    <label>
+                        Фамилия
+                        <input type="text" id="lastName" required placeholder="Введите фамилию" />
+                    </label>
+                </div>
+
+                <div id="searchResult" class="search-result"></div>
+
+                <label class="checkbox-row">
+                    <input type="checkbox" id="withFamily" />
+                    Я приду с семьёй
+                </label>
+
+                <div id="familyWrap" class="hidden">
+                    <h3>Состав семьи</h3>
+                    <div id="familyList"></div>
+                    <button type="button" class="secondary" id="addFamilyMember">+ Добавить члена семьи</button>
+                </div>
+
+                <label>
+                    Сможете присутствовать?
+                    <select id="attendance" required>
+                        <option value="">Выберите вариант</option>
+                        <option>Да, с радостью</option>
+                        <option>К сожалению, не смогу</option>
+                    </select>
+                </label>
+
+                <label>
+                    На чём планируете добираться?
+                    <select id="transport" required>
+                        <option value="">Выберите вариант</option>
+                        <option>На личном авто</option>
+                        <option>На такси</option>
+                        <option>Нужен трансфер</option>
+                        <option>Общественный транспорт</option>
+                    </select>
+                </label>
+
+                <label>
+                    Нужна ли помощь с проживанием?
+                    <select id="accommodation" required>
+                        <option value="">Выберите вариант</option>
+                        <option>Нет, всё есть</option>
+                        <option>Да, нужен отель</option>
+                        <option>Да, нужна помощь с трансфером до отеля</option>
+                    </select>
+                </label>
+
+                <label>
+                    Есть ли пожелания по меню / аллергии?
+                    <input type="text" id="dietary" placeholder="Например: без глютена" />
+                </label>
+
+                <label>
+                    Любимая песня для танцпола
+                    <input type="text" id="music" placeholder="Название трека / исполнитель" />
+                </label>
+
+                <label>
+                    Во сколько примерно будете на площадке?
+                    <select id="arrivalTime">
+                        <option value="">Выберите вариант</option>
+                        <option>К 15:00</option>
+                        <option>К 16:00</option>
+                        <option>После 16:00</option>
+                    </select>
+                </label>
+
+                <label>
+                    Дополнительный комментарий
+                    <textarea id="comment" rows="4" placeholder="Ваши вопросы, пожелания"></textarea>
+                </label>
+
+                <button type="submit" class="primary">Отправить анкету</button>
+                <p id="status" class="status"></p>
+            </form>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
