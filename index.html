@@ -3,24 +3,121 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Цветочный сайт</title>
+  <title>Никита & Атлана — приглашение</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Marck+Script&family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div class="vines vines-left" aria-hidden="true"></div>
   <div class="vines vines-right" aria-hidden="true"></div>
 
-  <main class="content">
-    <h1>Цветочная атмосфера 🌸</h1>
-    <p>Добавил анимацию цветочков, свисающие по бокам зелёные элементы и немного больше зелени в фоне.</p>
+  <div class="petals" aria-hidden="true">
+    <span>🌸</span><span>🌺</span><span>🌼</span><span>💮</span><span>🌷</span><span>🌸</span><span>🌺</span>
+  </div>
 
-    <section class="flowers" aria-label="Декоративные цветы">
-      <div class="flower flower-1">🌸</div>
-      <div class="flower flower-2">🌼</div>
-      <div class="flower flower-3">🌷</div>
-      <div class="flower flower-4">🌺</div>
-      <div class="flower flower-5">💮</div>
+  <main class="container">
+    <header class="hero card">
+      <p class="date">07.08.2027</p>
+      <h1>Никита &amp; Атлана</h1>
+      <p class="subtitle">С любовью приглашаем вас разделить наш особенный день.</p>
+      <a class="btn" href="#rsvp">Подтвердить участие</a>
+    </header>
+
+    <section class="card">
+      <h2>Дорогие гости!</h2>
+      <p>
+        Мы будем счастливы видеть вас на нашей свадьбе. Пусть этот день станет началом новой красивой истории,
+        наполненной теплом, улыбками и объятиями.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Программа дня</h2>
+      <ul class="timeline">
+        <li><strong>15:00</strong> Сбор гостей и welcome-зона</li>
+        <li><strong>16:00</strong> Церемония</li>
+        <li><strong>17:00</strong> Банкет и тёплые поздравления</li>
+        <li><strong>20:00</strong> Танцы, торт и вечерняя программа</li>
+      </ul>
+    </section>
+
+    <section id="rsvp" class="card">
+      <h2>RSVP / Анкета гостя</h2>
+      <form class="rsvp-grid">
+        <label>Имя
+          <input type="text" name="firstName" placeholder="Введите имя" required />
+        </label>
+        <label>Фамилия
+          <input type="text" name="lastName" placeholder="Введите фамилию" required />
+        </label>
+
+        <label class="full checkbox-row">
+          <input type="checkbox" id="withFamily" />
+          <span>Я приду с семьёй</span>
+        </label>
+
+        <div id="familyBlock" class="full family hidden">
+          <p class="family-title">Состав семьи</p>
+          <div id="familyList"></div>
+          <button class="btn btn-soft" type="button" id="addFamilyMember">+ Добавить члена семьи</button>
+        </div>
+
+        <label>Сможете присутствовать?
+          <select name="attendance" required>
+            <option value="">Выберите вариант</option>
+            <option>Да, с радостью!</option>
+            <option>К сожалению, не смогу</option>
+            <option>Пока не уверен(а)</option>
+          </select>
+        </label>
+
+        <label>На чём планируете добираться?
+          <select name="transport">
+            <option value="">Выберите вариант</option>
+            <option>На машине</option>
+            <option>На такси</option>
+            <option>Нужен трансфер</option>
+          </select>
+        </label>
+
+        <label>Нужна ли помощь с проживанием?
+          <select name="hotel">
+            <option value="">Выберите вариант</option>
+            <option>Да, нужна</option>
+            <option>Нет, не нужна</option>
+          </select>
+        </label>
+
+        <label>Пожелания по меню / аллергии
+          <input type="text" name="food" placeholder="Например: без глютена" />
+        </label>
+
+        <label>Любимая песня для танцпола
+          <input type="text" name="song" placeholder="Название трека / исполнитель" />
+        </label>
+
+        <label>Во сколько примерно будете на площадке?
+          <select name="arrivalTime">
+            <option value="">Выберите вариант</option>
+            <option>К началу (15:00)</option>
+            <option>К церемонии (16:00)</option>
+            <option>Позже</option>
+          </select>
+        </label>
+
+        <label class="full">Дополнительный комментарий
+          <textarea name="comment" rows="4" placeholder="Ваши вопросы, пожелания"></textarea>
+        </label>
+
+        <div class="full actions">
+          <button type="submit" class="btn">Отправить анкету</button>
+        </div>
+      </form>
     </section>
   </main>
+
+  <script src="script.js"></script>
 </body>
 </html>

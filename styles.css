@@ -1,9 +1,12 @@
 :root {
-  --green-1: #dff5df;
-  --green-2: #bde8be;
-  --green-3: #85c98a;
-  --green-dark: #3d7b42;
+  --bg-1: #ecf8ea;
+  --bg-2: #d6ecd3;
+  --bg-3: #b7dfb7;
+  --text: #16321c;
+  --accent: #2f7a40;
+  --accent-soft: #edf8ec;
   --card: rgba(255, 255, 255, 0.84);
+  --line: rgba(47, 122, 64, 0.2);
 }
 
 * {
@@ -13,128 +16,253 @@
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  color: #1b3020;
+  color: var(--text);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, sans-serif;
   background:
-    radial-gradient(circle at 12% 20%, #eaffea 0, transparent 35%),
-    radial-gradient(circle at 90% 85%, #d4f0d6 0, transparent 30%),
-    linear-gradient(170deg, var(--green-1), var(--green-2));
+    radial-gradient(circle at 10% 14%, rgba(255, 255, 255, 0.8) 0 14%, transparent 30%),
+    radial-gradient(circle at 84% 22%, rgba(228, 250, 230, 0.95) 0 12%, transparent 26%),
+    radial-gradient(circle at 68% 78%, rgba(219, 244, 219, 0.8) 0 16%, transparent 30%),
+    linear-gradient(160deg, var(--bg-1), var(--bg-2) 55%, var(--bg-3));
   overflow-x: hidden;
 }
 
-.content {
+.container {
+  width: min(980px, 92vw);
+  margin: 3rem auto;
   position: relative;
-  max-width: 900px;
-  margin: 8vh auto;
+  z-index: 1;
+}
+
+.card {
   background: var(--card);
-  border: 1px solid rgba(61, 123, 66, 0.15);
+  border: 1px solid var(--line);
   border-radius: 20px;
-  padding: 2.5rem;
-  text-align: center;
-  box-shadow: 0 16px 40px rgba(45, 90, 52, 0.15);
+  padding: 1.6rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 12px 30px rgba(24, 80, 35, 0.12);
+  backdrop-filter: blur(2px);
 }
 
-h1 {
+.hero h1 {
+  font-family: "Marck Script", cursive;
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  color: var(--accent);
+  margin: 0 0 0.5rem;
+}
+
+.date {
+  margin: 0 0 .4rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+}
+
+.subtitle {
+  margin: 0 0 1.4rem;
+}
+
+h2 {
   margin-top: 0;
-  color: var(--green-dark);
 }
 
-p {
-  margin-bottom: 2rem;
+.timeline {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: .5rem;
 }
 
-.flowers {
-  display: flex;
-  justify-content: center;
-  gap: 1.25rem;
-  flex-wrap: wrap;
+.btn {
+  display: inline-block;
+  text-decoration: none;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: .72rem 1.15rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
 }
 
-.flower {
-  font-size: clamp(2rem, 4vw, 3rem);
-  filter: drop-shadow(0 8px 8px rgba(24, 70, 31, 0.2));
-  animation: float 3.2s ease-in-out infinite;
-  transform-origin: center bottom;
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(47, 122, 64, 0.25);
 }
 
-.flower-2 { animation-delay: .25s; }
-.flower-3 { animation-delay: .5s; }
-.flower-4 { animation-delay: .75s; }
-.flower-5 { animation-delay: 1s; }
+.btn-soft {
+  color: var(--accent);
+  border: 1px solid var(--line);
+  background: var(--accent-soft);
+}
 
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0) rotate(0deg) scale(1);
-  }
-  50% {
-    transform: translateY(-10px) rotate(4deg) scale(1.04);
-  }
+.rsvp-grid {
+  display: grid;
+  gap: .9rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.rsvp-grid label {
+  display: grid;
+  gap: .35rem;
+  font-weight: 600;
+}
+
+.full {
+  grid-column: 1 / -1;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  border: 1px solid #bfd8c3;
+  border-radius: 10px;
+  padding: .66rem .7rem;
+  font: inherit;
+  color: inherit;
+  background: #fff;
+}
+
+.checkbox-row {
+  display: flex !important;
+  align-items: center;
+  gap: .6rem;
+  font-weight: 600;
+}
+
+.checkbox-row input {
+  width: auto;
+}
+
+.hidden {
+  display: none;
+}
+
+.family {
+  border: 1px dashed #9ccc9f;
+  border-radius: 14px;
+  padding: .8rem;
+  background: rgba(237, 248, 236, 0.8);
+}
+
+.family-title {
+  margin: 0 0 .5rem;
+  font-weight: 700;
+}
+
+.family-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: .5rem;
+  margin-bottom: .5rem;
+}
+
+.family-item button {
+  border: 1px solid #d8a8a8;
+  border-radius: 10px;
+  background: #fff2f2;
+  cursor: pointer;
+}
+
+.actions {
+  margin-top: .4rem;
 }
 
 .vines {
   position: fixed;
-  top: -10px;
-  bottom: -10px;
-  width: 110px;
+  top: 0;
+  bottom: 0;
+  width: 140px;
+  opacity: .85;
   pointer-events: none;
-  z-index: 0;
-  opacity: 0.82;
 }
 
 .vines::before,
 .vines::after {
   content: "";
   position: absolute;
-  top: 0;
-  width: 6px;
-  height: 100%;
-  background: linear-gradient(var(--green-dark), #5ca862);
+  top: -10%;
+  width: 7px;
+  height: 120%;
   border-radius: 999px;
-  filter: drop-shadow(0 0 3px rgba(61, 123, 66, 0.35));
+  background: linear-gradient(#2f7a40, #6dbb72);
 }
 
 .vines::before {
   left: 34px;
-  transform: skewX(-5deg);
+  transform: rotate(3deg);
 }
 
 .vines::after {
-  left: 66px;
-  transform: skewX(5deg);
+  left: 70px;
+  transform: rotate(-4deg);
 }
 
 .vines-left {
   left: 0;
   background:
-    radial-gradient(circle at 30px 8%, var(--green-3) 0 10px, transparent 11px),
-    radial-gradient(circle at 65px 21%, var(--green-3) 0 9px, transparent 10px),
-    radial-gradient(circle at 45px 35%, #76bf7f 0 10px, transparent 11px),
-    radial-gradient(circle at 75px 50%, #8fd395 0 9px, transparent 10px),
-    radial-gradient(circle at 28px 66%, var(--green-3) 0 10px, transparent 11px),
-    radial-gradient(circle at 62px 80%, #76bf7f 0 10px, transparent 11px),
-    radial-gradient(circle at 42px 93%, #8fd395 0 8px, transparent 9px);
+    radial-gradient(circle at 28px 6%, #6cb671 0 10px, transparent 11px),
+    radial-gradient(circle at 72px 18%, #86cb89 0 10px, transparent 11px),
+    radial-gradient(circle at 40px 36%, #73bf77 0 10px, transparent 11px),
+    radial-gradient(circle at 80px 52%, #9ad89b 0 11px, transparent 12px),
+    radial-gradient(circle at 35px 67%, #6cb671 0 10px, transparent 11px),
+    radial-gradient(circle at 70px 83%, #86cb89 0 10px, transparent 11px);
 }
 
 .vines-right {
   right: 0;
   background:
-    radial-gradient(circle at 70px 9%, var(--green-3) 0 10px, transparent 11px),
-    radial-gradient(circle at 35px 20%, var(--green-3) 0 9px, transparent 10px),
-    radial-gradient(circle at 58px 36%, #76bf7f 0 10px, transparent 11px),
-    radial-gradient(circle at 30px 51%, #8fd395 0 9px, transparent 10px),
-    radial-gradient(circle at 72px 64%, var(--green-3) 0 10px, transparent 11px),
-    radial-gradient(circle at 38px 82%, #76bf7f 0 10px, transparent 11px),
-    radial-gradient(circle at 60px 95%, #8fd395 0 8px, transparent 9px);
+    radial-gradient(circle at 78px 9%, #6cb671 0 10px, transparent 11px),
+    radial-gradient(circle at 36px 24%, #86cb89 0 10px, transparent 11px),
+    radial-gradient(circle at 74px 38%, #73bf77 0 10px, transparent 11px),
+    radial-gradient(circle at 30px 57%, #9ad89b 0 11px, transparent 12px),
+    radial-gradient(circle at 77px 70%, #6cb671 0 10px, transparent 11px),
+    radial-gradient(circle at 40px 88%, #86cb89 0 10px, transparent 11px);
 }
 
-@media (max-width: 700px) {
-  .content {
-    margin: 5vh 1rem;
-    padding: 1.5rem;
+.petals {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.petals span {
+  position: absolute;
+  top: -8vh;
+  font-size: clamp(1.2rem, 2vw, 1.7rem);
+  animation: fall linear infinite;
+  opacity: .8;
+}
+
+.petals span:nth-child(1) { left: 8%; animation-duration: 11s; }
+.petals span:nth-child(2) { left: 20%; animation-duration: 14s; animation-delay: 1s; }
+.petals span:nth-child(3) { left: 34%; animation-duration: 10s; animation-delay: 3s; }
+.petals span:nth-child(4) { left: 48%; animation-duration: 16s; animation-delay: 1.5s; }
+.petals span:nth-child(5) { left: 63%; animation-duration: 12s; animation-delay: 2.8s; }
+.petals span:nth-child(6) { left: 77%; animation-duration: 13s; animation-delay: .7s; }
+.petals span:nth-child(7) { left: 91%; animation-duration: 15s; animation-delay: 2s; }
+
+@keyframes fall {
+  from {
+    transform: translateY(-10vh) rotate(0deg);
+  }
+  to {
+    transform: translateY(110vh) rotate(360deg);
+  }
+}
+
+@media (max-width: 760px) {
+  .rsvp-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .family-item {
+    grid-template-columns: 1fr;
   }
 
   .vines {
     width: 80px;
-    opacity: 0.65;
+    opacity: .5;
   }
 }
